@@ -1,8 +1,8 @@
-import { BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Logo from "./logo.png";
 import useInitialState from "./hooks/useInitialState.js";
-import useGetMeals from "./hooks/useGetMeals"
-import useGetReceipe from "./hooks/useGetReceipe"
+import useGetMeals from "./hooks/useGetMeals";
+import useGetReceipe from "./hooks/useGetReceipe";
 import "./index.css";
 function App() {
   function toggleMenu() {
@@ -79,8 +79,7 @@ function App() {
           </Route>
           <Route exact path="/recetas/:id">
             <div className="container_meals">
-
-            <MealReceipe/>
+              <MealReceipe />
             </div>
           </Route>
           <Route path="/users">
@@ -153,43 +152,54 @@ function Meal() {
   console.log(listMeals);
   return (
     <div className="container_meals">
-      {
-      listMeals.length > 0 && listMeals.map(
-        (meal) => (
-
-      <div key={meal.id} className="mealcard">
-        <Link to={`/recetas/${meal.id}`}>
-        <img src="https://www.girasol.com.ec/girasolreduxerol/wp-content/uploads/2016/09/reduxero-3.jpg" alt="Foto de comida" />
-        <div className="information">
-        <h3>{meal.title}</h3>
-        <p>{meal.description}</p>
-          <span><i>{meal.time ? meal.time : "10 min"}</i></span>
-        </div>
-        </Link>
-      </div>
-        )
-      )
-      }
+      {listMeals.length > 0 &&
+        listMeals.map((meal) => (
+          <div key={meal.id} className="mealcard">
+            <Link to={`/recetas/${meal.id}`}>
+              <img
+                src="https://www.girasol.com.ec/girasolreduxerol/wp-content/uploads/2016/09/reduxero-3.jpg"
+                alt="Foto de comida"
+              />
+              <div className="information">
+                <h3>{meal.title}</h3>
+                <p>{meal.description}</p>
+                <span>
+                  <i>{meal.time ? meal.time : "10 min"}</i>
+                </span>
+              </div>
+            </Link>
+          </div>
+        ))}
     </div>
   );
 }
 
-function MealReceipe(){
+function MealReceipe() {
   const receipe = useGetReceipe();
-  const img_url = "https://dam.muyinteresante.com.mx/wp-content/uploads/2018/10/beneficios-de-comer-papa-900.jpg"
-  return(
+  const img_url =
+    "https://dam.muyinteresante.com.mx/wp-content/uploads/2018/10/beneficios-de-comer-papa-900.jpg";
+  return (
     <div style={{ backgroundImage: `url(${img_url})` }} className="receipecard">
+      <div className="receipebox">
+
       <div className="title">
-       <h3>{receipe.title}</h3>
+        <h3>{receipe.title}</h3>
         <p>{receipe.author}</p>
       </div>
-      
-      <div className="ingridients">
-       <h3>{receipe.title}</h3>
-        <p>{receipe.author}</p>
+
+      <ul className="ingridients">
+        {receipe.ingridients &&
+          receipe.ingridients.map((ingridient) => (
+            <li key={ingridient.ingridientId}>
+              <span>Nombre Mamalon</span>
+              <span>{ingridient.cantidad} {ingridient.unidad}</span>
+            </li>
+          ))}
+      </ul>
+      <p className="preparacion">{receipe.preparacion}</p>
       </div>
     </div>
-  )
+  );
 }
 
 function UserProfile() {
